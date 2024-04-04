@@ -1,18 +1,19 @@
 import './App.css'
-import { Input, Button } from "@material-tailwind/react";
-
-const InputComponent:React.ForwardRefExoticComponent<any> = Input;
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import WelcomePage from './pages/WelcomePage';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
 
 function App() {
   return (
     <>
-      <div className="text-3xl font-bold underline m-20">
-        Higway Delight
-      </div>
-      <InputComponent
-        label="Name"
-        className="mt-100"
-      />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/signin" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
