@@ -9,7 +9,7 @@ import connectDB from "./db/connectDB";
 const port = process.env.PORT || 4000;
 
 //middlewares
-import logger from "middlewares/logger.middleware";
+import logger from "./middlewares/logger.middleware";
 
 app.use(logger);
 
