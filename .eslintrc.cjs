@@ -52,5 +52,6 @@ module.exports = {
       "no-undef-init": "warn",
       "no-shadow": "warn",
       "no-shadow-restricted-names": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
     },
 }
