@@ -12,7 +12,7 @@ const errorHandler = (err: CustomError, req: Request, res: Response) => {
     console.error(`ERROR STACK: ${err.stack}`);
   }
 
-  return res.status(err.statusCode).json({
+  return res.status(500).json({
     ok: false,
     error: err.message,
     data: {},
