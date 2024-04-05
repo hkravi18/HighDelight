@@ -1,0 +1,22 @@
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  padding: 40px;
+}
+
+.welcome-heading {
+  font-size: 900;
+  font-weight: 700;
+  color: #d72638;
+  margin: 40px;
+}
+
+.welcome-title {
+  font-size: 900;
+  font-weight: 900;
+  margin: 10px;
+  color: #3a344a;
+}
