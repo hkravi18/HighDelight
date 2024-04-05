@@ -81,12 +81,26 @@ export const signup = async (
     );
 
     if (user) {
+      res.cookie("token", token, {
+        maxAge: 2 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+      });
+      res.cookie("email", user.email, {
+        maxAge: 2 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+      });
+
       return res.status(201).json({
         ok: true,
         message: "User registered successfully.",
         data: {
           user: {
             email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            contactMode: user.contactMode,
             token,
           },
         },
@@ -107,8 +121,6 @@ export const signup = async (
       error: "User Registration failed, Please try again.",
       data: {},
     });
-    // next(error);F
-    // return;
   }
 };
 
@@ -169,12 +181,26 @@ export const login = async (
       "2h"
     );
 
+    res.cookie("token", token, {
+      maxAge: 2 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+    });
+    res.cookie("email", user.email, {
+      maxAge: 2 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+    });
+
     return res.status(200).json({
       ok: true,
       message: "User logged in successfully.",
       data: {
         user: {
           email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          contactMode: user.contactMode,
           token,
         },
       },
