@@ -5,19 +5,45 @@
   align-items: center;
 }
 
+.signup-form-titles {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .signup-img {
   width: 100%;
   height: 100%;
 }
 
-.signup-title {
+.signup-title1 {
   color: var(--primary-color);
   font-weight: 900;
   font-size: xx-large;
+  margin: 10px;
 }
 
-.signup-title span {
+.signup-title1 span {
   color: var(--secondary-color);
+}
+
+.signup-title2 {
+  color: var(--primary-color);
+  font-weight: 900;
+  font-size: small;
+  cursor: pointer;
+}
+
+.signup-title2 span {
+  color: var(--secondary-color);
+}
+
+.signup-password,
+.signup-confirm-password {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 @media screen and (min-width: 768px) {

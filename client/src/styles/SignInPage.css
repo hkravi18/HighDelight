@@ -28,6 +28,12 @@
   border-color: var(--primary-color);
 }
 
+.signin-password {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 @media screen and (min-width: 768px) {
 }
 

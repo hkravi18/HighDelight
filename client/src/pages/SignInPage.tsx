@@ -6,6 +6,7 @@ import {
   CardBody as CardBodyTailwind,
   CardFooter as CardFooterTailwind,
 } from "@material-tailwind/react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +32,9 @@ const SignInPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [passwordType, setPasswordType] = useState<string>("password");
 
   const navigate = useNavigate();
 
@@ -149,17 +153,40 @@ const SignInPage = () => {
                   className="border-none"
                 />
 
-                <Input
-                  label="Password"
-                  size="lg"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPassword(e.target.value)
-                  }
-                  className="border-none"
-                />
+                <div className="signin-password">
+                  <Input
+                    label="Password"
+                    size="lg"
+                    name="password"
+                    type={passwordType}
+                    value={password}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setPassword(e.target.value)
+                    }
+                    className="border-none"
+                  />
+                  {showPassword ? (
+                    <EyeIcon
+                      className="eye-icon w-4 h-4"
+                      onClick={() => {
+                        passwordType === "password"
+                          ? setPasswordType("text")
+                          : setPasswordType("password");
+                        setShowPassword(!showPassword);
+                      }}
+                    />
+                  ) : (
+                    <EyeSlashIcon
+                      className="eye-slash-icon w-4 h-4"
+                      onClick={() => {
+                        passwordType === "password"
+                          ? setPasswordType("text")
+                          : setPasswordType("password");
+                        setShowPassword(!showPassword);
+                      }}
+                    />
+                  )}
+                </div>
               </CardBody>
               <CardFooter className="pt-0">
                 <Button

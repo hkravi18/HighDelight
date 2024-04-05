@@ -5,8 +5,8 @@ import {
   CardHeader as CardHeaderTailwind,
   CardBody as CardBodyTailwind,
   CardFooter as CardFooterTailwind,
-  Typography as TypographyTailwind,
 } from "@material-tailwind/react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,6 @@ const Card: React.ForwardRefExoticComponent<any> = CardTailwind;
 const CardHeader: React.ForwardRefExoticComponent<any> = CardHeaderTailwind;
 const CardBody: React.ForwardRefExoticComponent<any> = CardBodyTailwind;
 const CardFooter: React.ForwardRefExoticComponent<any> = CardFooterTailwind;
-const Typography: React.ForwardRefExoticComponent<any> = TypographyTailwind;
 
 import "../styles/SignUpPage.css";
 
@@ -51,6 +50,9 @@ const SignUpPage = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingMsg, setLoadingMsg] = useState<string>("");
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [passwordType, setPasswordType] = useState<string>("password");
 
   const handleOtpVerification = async () => {
     setLoading(true);
@@ -253,9 +255,17 @@ const SignUpPage = () => {
                   variant="gradient"
                   className="mb-4 grid h-28 place-items-center"
                 >
-                  <h3 className="signup-title">
-                    Let Us Know <span>!</span>
-                  </h3>
+                  <div className="signup-form-titles">
+                    <h3 className="signup-title1">
+                      Let Us Know <span>!</span>
+                    </h3>
+                    <h6
+                      className="signup-title2"
+                      onClick={() => navigate("/signin")}
+                    >
+                      Sign<span>In</span>
+                    </h6>
+                  </div>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
                   <Input
@@ -280,28 +290,74 @@ const SignUpPage = () => {
                     }
                     className="border-none"
                   />
-                  <Input
-                    label="Password"
-                    size="lg"
-                    name="password"
-                    type="password"
-                    value={form.password}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleInputChange(e)
-                    }
-                    className="border-none"
-                  />
-                  <Input
-                    label="Confirm Password"
-                    size="lg"
-                    name="confirmPassword"
-                    type="password"
-                    value={form.confirmPassword}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleInputChange(e)
-                    }
-                    className="border-none"
-                  />
+                  <div className="signup-password">
+                    <Input
+                      label="Password"
+                      size="lg"
+                      name="password"
+                      type={passwordType}
+                      value={form.password}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInputChange(e)
+                      }
+                      className="border-none"
+                    />
+                    {showPassword ? (
+                      <EyeIcon
+                        className="eye-icon w-4 h-4"
+                        onClick={() => {
+                          passwordType === "password"
+                            ? setPasswordType("text")
+                            : setPasswordType("password");
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                    ) : (
+                      <EyeSlashIcon
+                        className="eye-slash-icon w-4 h-4"
+                        onClick={() => {
+                          passwordType === "password"
+                            ? setPasswordType("text")
+                            : setPasswordType("password");
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                    )}
+                  </div>
+                  <div className="signup-confirm-password">
+                    <Input
+                      label="Confirm Password"
+                      size="lg"
+                      name="confirmPassword"
+                      type={passwordType}
+                      value={form.confirmPassword}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleInputChange(e)
+                      }
+                      className="border-none"
+                    />
+                    {showPassword ? (
+                      <EyeIcon
+                        className="eye-icon w-4 h-4"
+                        onClick={() => {
+                          passwordType === "password"
+                            ? setPasswordType("text")
+                            : setPasswordType("password");
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                    ) : (
+                      <EyeSlashIcon
+                        className="eye-slash-icon w-4 h-4"
+                        onClick={() => {
+                          passwordType === "password"
+                            ? setPasswordType("text")
+                            : setPasswordType("password");
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                    )}
+                  </div>
                   <Input
                     label="ContactMode"
                     size="lg"
@@ -333,21 +389,6 @@ const SignUpPage = () => {
                   >
                     Send OTP
                   </Button>
-                  <Typography
-                    variant="small"
-                    className="mt-6 flex justify-center"
-                  >
-                    Already have an account?
-                    <Typography
-                      as="a"
-                      href="/signin"
-                      variant="small"
-                      color="blue-gray"
-                      className="ml-1 font-bold"
-                    >
-                      Login
-                    </Typography>
-                  </Typography>
                 </CardFooter>
               </Card>
             </div>
