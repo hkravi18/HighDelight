@@ -4,6 +4,10 @@
 
 This is a simple project based on MERN tech stack for basic user authentication (signup and login) along with OTP verifying functionality.
 
+## Important Note
+
+To use the linting, formatting and pre-post hooks tools (like eslint, prettier and husky), I have installed these in the root directory of the project (to keep .husky and in the same level as package.json and .git folder), So to contribute/use this project, kindly install the dev dependencies in the root directory of the project also apart from client and server directories.
+
 ## Table of Contents
 
 - [Features](#features)

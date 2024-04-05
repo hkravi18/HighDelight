@@ -136,7 +136,6 @@ export const login = async (
 ) => {
   try {
     const { email, password }: SignInRequestBody = req.body;
-    console.log("req.body :", req.body);
 
     const validationRes: HandleValidation = handleValidation(
       "",
