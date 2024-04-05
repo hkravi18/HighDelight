@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { HandleJWTPayload } from "interfaces/utils.interface";
 
 export const generateToken = (payload: HandleJWTPayload, expiry: string) => {
-  const secret: string = process.env.SECRET_KEY as string;
+  const secret: string = process.env.JWT_SECRET_KEY as string;
   const options: object = { expiresIn: expiry };
 
   return jwt.sign(payload, secret, options);
@@ -12,7 +12,7 @@ export const generateToken = (payload: HandleJWTPayload, expiry: string) => {
 
 export const verifyToken = (token: string): HandleJWTPayload => {
   try {
-    const secret: string = process.env.SECRET_KEY as string;
+    const secret: string = process.env.JWT_SECRET_KEY as string;
     const decoded: HandleJWTPayload = jwt.verify(
       token,
       secret

@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
-import { Response, Request, NextFunction } from "express";
+import { Response, Request } from "express";
 
 //models
 import User from "../models/user.model";
 
 //utils
-import handleValidation from "utils/handleValidation";
-import { generateToken } from "utils/handleJWT";
+import handleValidation from "../utils/handleValidation";
+import { generateToken } from "../utils/handleJWT";
 
 //interfaces
 import {
@@ -15,15 +15,15 @@ import {
 } from "../interfaces/request.interface";
 import { HandleValidation } from "interfaces/utils.interface";
 
-import CustomError from "lib/customError";
+// import CustomError from "../lib/customError";
 
 // @desc     User Signup
 // route     POST /api/auth/signup
 // @access   Public
 export const signup = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
+  //next: NextFunction
 ) => {
   try {
     const {
@@ -45,20 +45,20 @@ export const signup = async (
     );
 
     if (!validationRes.valid) {
-      const error = new CustomError(validationRes.error, 400, "signup");
-      next(error);
-      return;
+      return res.status(400).json({
+        ok: false,
+        error: validationRes.error,
+        data: {},
+      });
     }
 
     const userAlreadyExists = await User.findOne({ email });
     if (userAlreadyExists) {
-      const error = new CustomError(
-        "User already exists. Please Login",
-        409,
-        "signup"
-      );
-      next(error);
-      return;
+      return res.status(409).json({
+        ok: false,
+        error: "User already exists. Please Login",
+        data: {},
+      });
     }
 
     //hashing the password
@@ -92,26 +92,23 @@ export const signup = async (
         },
       });
     } else {
-      const error = new CustomError(
-        "User Registration failed, Please try again.",
-        500,
-        "signup"
-      );
-      next(error);
-      return;
+      return res.status(500).json({
+        ok: false,
+        error: "User Registration failed, Please try again.",
+        data: {},
+      });
     }
   } catch (err) {
     if (err instanceof Error) {
       console.error(`ERROR (signup): ${err.message}`);
     }
-
-    const error = new CustomError(
-      "User Registration failed, Please try again.",
-      500,
-      "signup"
-    );
-    next(error);
-    return;
+    return res.status(500).json({
+      ok: false,
+      error: "User Registration failed, Please try again.",
+      data: {},
+    });
+    // next(error);F
+    // return;
   }
 };
 
@@ -120,8 +117,8 @@ export const signup = async (
 // @access   Public
 export const login = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
+  //next: NextFunction
 ) => {
   try {
     const { email, password }: SignInRequestBody = req.body;
@@ -133,12 +130,14 @@ export const login = async (
       email,
       password,
       "",
-      "signup"
+      "login"
     );
     if (!validationRes.valid) {
-      const error = new CustomError(validationRes.error, 400, "login");
-      next(error);
-      return;
+      return res.status(400).json({
+        ok: false,
+        error: validationRes.error,
+        data: {},
+      });
     }
 
     const user = await User.findOne({
@@ -146,25 +145,21 @@ export const login = async (
     });
 
     if (!user) {
-      const error = new CustomError(
-        "Incorrect email or password",
-        401,
-        "login"
-      );
-      next(error);
-      return;
+      return res.status(401).json({
+        ok: false,
+        error: "Incorrect email or password",
+        data: {},
+      });
     }
 
     const checkPassword = await bcrypt.compare(password, user.password);
 
     if (!checkPassword) {
-      const error = new CustomError(
-        "Incorrect email or password",
-        401,
-        "login"
-      );
-      next(error);
-      return;
+      return res.status(401).json({
+        ok: false,
+        error: "Incorrect email or password",
+        data: {},
+      });
     }
 
     const token = generateToken(
@@ -189,12 +184,10 @@ export const login = async (
       console.error(`ERROR (login): ${err.message}`);
     }
 
-    const error = new CustomError(
-      "User Login failed, Please try again.",
-      500,
-      "login"
-    );
-    next(error);
-    return;
+    return res.status(500).json({
+      ok: false,
+      error: "User Login failed, Please try again.",
+      data: {},
+    });
   }
 };

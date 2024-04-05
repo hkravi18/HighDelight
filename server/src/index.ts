@@ -11,7 +11,15 @@ const port = process.env.PORT || 4000;
 //middlewares
 import logger from "./middlewares/logger.middleware";
 
+//routes
+import authRoute from "./routes/auth.route";
+import errorHandler from "./middlewares/errorHandler.middleware";
+
 app.use(logger);
+
+app.use("/api/auth", authRoute);
+
+app.use(errorHandler);
 
 //database connection
 connectDB()
