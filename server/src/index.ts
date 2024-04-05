@@ -13,10 +13,12 @@ import logger from "./middlewares/logger.middleware";
 
 //routes
 import authRoute from "./routes/auth.route";
+import otpRoute from "./routes/otp.route";
 import errorHandler from "./middlewares/errorHandler.middleware";
 
 app.use(logger);
 
+app.use("/api/auth/otp", otpRoute);
 app.use("/api/auth", authRoute);
 
 app.use(errorHandler);

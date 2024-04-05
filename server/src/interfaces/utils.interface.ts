@@ -7,3 +7,8 @@ export interface HandleValidation {
 export interface HandleJWTPayload {
   email: string;
 }
+
+export interface HandleOTPGeneration {
+  otp: string;
+  expiry: Date;
+}
