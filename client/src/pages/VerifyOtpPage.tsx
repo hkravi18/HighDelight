@@ -1,71 +1,112 @@
-import { useRef, useState } from 'react';
+import {
+  Input as InputTailwind,
+  Button as ButtonTailwind,
+  Card as CardTailwind,
+  CardHeader as CardHeaderTailwind,
+  CardBody as CardBodyTailwind,
+  CardFooter as CardFooterTailwind,
+  Typography as TypographyTailwind,
+} from "@material-tailwind/react";
 
-import { Button as ButtonTailwind } from "@material-tailwind/react";
 import "../styles/VerifyOtpPage.css";
 
+const Input: React.ForwardRefExoticComponent<any> = InputTailwind;
 const Button: React.ForwardRefExoticComponent<any> = ButtonTailwind;
+const Card: React.ForwardRefExoticComponent<any> = CardTailwind;
+const CardHeader: React.ForwardRefExoticComponent<any> = CardHeaderTailwind;
+const CardBody: React.ForwardRefExoticComponent<any> = CardBodyTailwind;
+const CardFooter: React.ForwardRefExoticComponent<any> = CardFooterTailwind;
+const Typography: React.ForwardRefExoticComponent<any> = TypographyTailwind;
 
 type OtpInputProps = {
+  otp: string;
   valueLength: number;
-  onChange: (otp: string) => void;
+  setOtp: (otp: string) => void;
   handleOtpVerification: () => void;
+  handleOTPStart: () => void;
 };
 
-const VerifyOtpPage: React.FC<OtpInputProps> = ({ valueLength, onChange, handleOtpVerification }) => {
-  const inputRefs = useRef<HTMLInputElement[]>(
-    Array(valueLength).fill(null)
-  );
-  const [otp, setOtp] = useState<string[]>(Array(valueLength).fill(''));
+const validateChar = (char: string) => /^[0-9]{0,6}$/.test(char);
 
-  const handleTextChange = (input: string, index: number) => {
-    const newOtp = [...otp];
-    newOtp[index] = input;
-    setOtp(newOtp);
-    if (newOtp.every((v) => v.length === 1)) {
-      onChange(newOtp.join(''));
+const VerifyOtpPage: React.FC<OtpInputProps> = ({
+  otp,
+  valueLength,
+  setOtp,
+  handleOtpVerification,
+  handleOTPStart,
+}: OtpInputProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const str: string = e.target.value;
+
+    if (str.length > valueLength) {
+      alert(`OTP should contains only ${valueLength} characters`);
+      return;
     }
+
+    if (!validateChar(str)) {
+      alert("OTP should contains numeric characters only");
+      return;
+    }
+
+    setOtp(str);
   };
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    if (e.key === 'Backspace') {
-      const newOtp = [...otp];
-      if (newOtp[index].length === 0) {
-        if (index > 0) {
-          inputRefs.current[index - 1].focus();
-          newOtp.splice(index - 1, 2, '');
-          setOtp(newOtp);
-        }
-      } else {
-        newOtp[index] = newOtp[index].slice(0, -1);
-        setOtp(newOtp);
-      }
-    }
+  const handleResendOTP = () => {
+    setOtp("");
+    handleOTPStart();
   };
 
   return (
     <>
-    <div className="otp-group">
-      {otp.map((_, idx) => (
-        <input
-          key={idx}
-          ref={(ref) => (inputRefs.current[idx] = ref!)}
-          className="otp-input"
-          type="text"
-          value={otp[idx]}
-          maxLength={1}
-          onChange={(e) => handleTextChange(e.target.value, idx)}
-          onKeyDown={(e) => handleKeyDown(e, idx)}
-          onFocus={(e) => {
-            const { target } = e;
-            target.select();
-          }}
-        />
-      ))}
-    </div>
-    <Button onClick={() => handleOtpVerification()}>Submit OTP</Button>
+      <div className="flex justify-center items-center w-screen h-screen">
+        <Card className="w-96">
+          <CardHeader
+            variant="gradient"
+            color="gray"
+            className="mb-4 grid h-28 place-items-center"
+          >
+            <Typography variant="h3" color="white">
+              Verify OTP
+            </Typography>
+          </CardHeader>
+          <CardBody className="flex flex-col gap-4">
+            <Typography color="blue-gray" className="-mb-2 ml-2 font-medium">
+              OTP<span className="text-red-800">*</span> :
+            </Typography>
+            <Input
+              label="Enter your Otp"
+              size="lg"
+              type="number"
+              name="otp"
+              value={otp}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                handleChange(e);
+              }}
+            />
+          </CardBody>
+          <CardFooter className="pt-0">
+            <Button
+              variant="gradient"
+              fullWidth
+              onClick={handleOtpVerification}
+            >
+              Verify OTP
+            </Button>
+            <Typography variant="small" className="mt-6 flex justify-center">
+              Didn't receive OTP?
+              <Typography
+                as="a"
+                variant="small"
+                color="blue-gray"
+                className="ml-1 font-bold cursor-pointer"
+                onClick={handleResendOTP}
+              >
+                Resend OTP
+              </Typography>
+            </Typography>
+          </CardFooter>
+        </Card>
+      </div>
     </>
   );
 };
