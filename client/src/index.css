@@ -13,6 +13,9 @@
   color: #000;
   background-color: #fff;
 
+  --primary-color: #3a244a;
+  --secondary-color: #d72638;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

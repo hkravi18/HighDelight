@@ -5,7 +5,6 @@ import {
   CardHeader as CardHeaderTailwind,
   CardBody as CardBodyTailwind,
   CardFooter as CardFooterTailwind,
-  Typography as TypographyTailwind,
 } from "@material-tailwind/react";
 
 import { useState } from "react";
@@ -21,7 +20,6 @@ const Card: React.ForwardRefExoticComponent<any> = CardTailwind;
 const CardHeader: React.ForwardRefExoticComponent<any> = CardHeaderTailwind;
 const CardBody: React.ForwardRefExoticComponent<any> = CardBodyTailwind;
 const CardFooter: React.ForwardRefExoticComponent<any> = CardFooterTailwind;
-const Typography: React.ForwardRefExoticComponent<any> = TypographyTailwind;
 
 import "../styles/SignInPage.css";
 import { useAuth } from "../hooks/useAuth";
@@ -120,28 +118,25 @@ const SignInPage = () => {
           loaderColor="#000"
         />
       ) : (
-        <div className="md:flex md:flex-row flex-col">
+        <div className="md:flex md:flex-row flex-col signin-container">
           <div>
-            <img src={signin} alt="signIn_illustration" />
+            <img
+              src={signin}
+              alt="signIn_illustration"
+              className="signin-img"
+            />
           </div>
           <div className="flex justify-center items-center w-screen h-screen">
             <Card className="w-96">
               <CardHeader
                 variant="gradient"
-                color="gray"
                 className="mb-4 grid h-28 place-items-center"
               >
-                <Typography variant="h3" color="white">
-                  Fill What We Know!
-                </Typography>
+                <h3 className="signin-title">
+                  Fill What We Know <span>!</span>
+                </h3>
               </CardHeader>
               <CardBody className="flex flex-col gap-4">
-                <Typography
-                  color="blue-gray"
-                  className="-mb-2 ml-2 font-medium"
-                >
-                  Email<span className="text-red-800">*</span> :
-                </Typography>
                 <Input
                   label="Email"
                   size="lg"
@@ -151,13 +146,9 @@ const SignInPage = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEmail(e.target.value)
                   }
+                  className="border-none"
                 />
-                <Typography
-                  color="blue-gray"
-                  className="-mb-2 ml-2 font-medium"
-                >
-                  Password<span className="text-red-800">*</span> :
-                </Typography>
+
                 <Input
                   label="Password"
                   size="lg"
@@ -167,6 +158,7 @@ const SignInPage = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setPassword(e.target.value)
                   }
+                  className="border-none"
                 />
               </CardBody>
               <CardFooter className="pt-0">
@@ -176,7 +168,7 @@ const SignInPage = () => {
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
                     handleSubmit(e)
                   }
-                  className="mt-2 mb-2"
+                  className="mt-2 mb-2 signin-btn1"
                 >
                   Sign In
                 </Button>
@@ -184,7 +176,7 @@ const SignInPage = () => {
                   variant="gradient"
                   fullWidth
                   onClick={() => navigate("/signup")}
-                  className="mt-2 mb-2"
+                  className="mt-2 mb-2 signin-btn2"
                 >
                   Sign Up
                 </Button>

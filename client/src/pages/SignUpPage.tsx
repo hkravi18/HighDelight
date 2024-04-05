@@ -23,6 +23,8 @@ const CardBody: React.ForwardRefExoticComponent<any> = CardBodyTailwind;
 const CardFooter: React.ForwardRefExoticComponent<any> = CardFooterTailwind;
 const Typography: React.ForwardRefExoticComponent<any> = TypographyTailwind;
 
+import "../styles/SignUpPage.css";
+
 //interfaces
 import { signInForm } from "../interfaces/authInterface";
 
@@ -237,7 +239,7 @@ const SignUpPage = () => {
         />
       ) : (
         <>
-          <div className="md:flex md:flex-row flex-col justify-center align-center signup-container">
+          <div className="md:flex md:flex-row flex-col signup-container">
             <div className="signup-img-container">
               <img
                 src={signup}
@@ -249,12 +251,11 @@ const SignUpPage = () => {
               <Card className="w-96">
                 <CardHeader
                   variant="gradient"
-                  color="gray"
                   className="mb-4 grid h-28 place-items-center"
                 >
-                  <Typography variant="h3" color="white">
-                    Let Us Know!
-                  </Typography>
+                  <h3 className="signup-title">
+                    Let Us Know <span>!</span>
+                  </h3>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
                   <Input
@@ -266,6 +267,7 @@ const SignUpPage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(e)
                     }
+                    className="border-none"
                   />
                   <Input
                     label="LastName"
@@ -276,6 +278,7 @@ const SignUpPage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(e)
                     }
+                    className="border-none"
                   />
                   <Input
                     label="Password"
@@ -286,6 +289,7 @@ const SignUpPage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(e)
                     }
+                    className="border-none"
                   />
                   <Input
                     label="Confirm Password"
@@ -296,6 +300,7 @@ const SignUpPage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(e)
                     }
+                    className="border-none"
                   />
                   <Input
                     label="ContactMode"
@@ -306,6 +311,7 @@ const SignUpPage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(e)
                     }
+                    className="border-none"
                   />
                   <Input
                     label="Email"
@@ -316,6 +322,7 @@ const SignUpPage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(e)
                     }
+                    className="border-none"
                   />
                 </CardBody>
                 <CardFooter className="pt-0">
