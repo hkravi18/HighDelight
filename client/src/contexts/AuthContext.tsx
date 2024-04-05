@@ -4,10 +4,10 @@ import Cookies from "js-cookie";
 interface Action {
   type: string;
   payload: {
-    firstName: string;
-    lastName: string;
-    contactMode: string;
-    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    contactMode: string | null;
+    email: string | null;
   };
 }
 
@@ -68,10 +68,10 @@ export const AuthContextProvider = ({
 
   useEffect(() => {
     const fetchDetails = async () => {
-      const firstName = Cookies.get("first-name");
-      const lastName = Cookies.get("last-name");
-      const email = Cookies.get("email");
-      const contactMode = Cookies.get("contact-mode");
+      const firstName = Cookies.get("hd-first-name");
+      const lastName = Cookies.get("hd-last-name");
+      const email = Cookies.get("hd-email");
+      const contactMode = Cookies.get("hd-contact-mode");
 
       if (firstName && lastName && email && contactMode) {
         dispatch({
@@ -84,7 +84,6 @@ export const AuthContextProvider = ({
           },
         });
       }
-      console.log(firstName, lastName, email, contactMode);
     };
     fetchDetails();
   }, [state.firstName, state.lastName, state.email, state.contactMode]);
