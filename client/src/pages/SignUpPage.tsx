@@ -12,6 +12,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { SyncLoadingScreen } from "../components/LoadingScreen";
+import signup from "../assets/signup.png";
 
 const Input: React.ForwardRefExoticComponent<any> = InputTailwind;
 const Button: React.ForwardRefExoticComponent<any> = ButtonTailwind;
@@ -45,7 +47,12 @@ const SignUpPage = () => {
   const [otp, setOtp] = useState<string>("");
   const [isOtpSend, setIsOtpSend] = useState<boolean>(false);
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingMsg, setLoadingMsg] = useState<string>("");
+
   const handleOtpVerification = async () => {
+    setLoading(true);
+    setLoadingMsg("Verifying OTP...");
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/otp/verify`,
@@ -73,6 +80,8 @@ const SignUpPage = () => {
         console.log("ERROR (OTP verification): An unknown error occurred");
       }
     }
+    setLoading(false);
+    setLoadingMsg("");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,6 +93,8 @@ const SignUpPage = () => {
   };
 
   const handleSignup = async () => {
+    setLoading(true);
+    setLoadingMsg("Signing Up...");
     try {
       const reqData: object = form;
 
@@ -139,6 +150,8 @@ const SignUpPage = () => {
         console.log("ERROR (signup): An unknown error occurred");
       }
     }
+    setLoading(false);
+    setLoadingMsg("");
   };
 
   const handleFieldsValidation = (): string => {
@@ -168,6 +181,8 @@ const SignUpPage = () => {
     }
 
     //send otp to user's email
+    setLoading(true);
+    setLoadingMsg("Sending OTP...");
     try {
       const reqData: object = {
         email: form.email,
@@ -199,11 +214,20 @@ const SignUpPage = () => {
         console.log("ERROR (send-otp): An unknown error occurred");
       }
     }
+    setLoading(false);
+    setLoadingMsg("");
   };
 
   return (
     <>
-      {isOtpSend ? (
+      {loading && (
+        <SyncLoadingScreen
+          message={loadingMsg || "Loading..."}
+          messageColor="#000"
+          loaderColor="#000"
+        />
+      )}
+      {isOtpSend && !loading ? (
         <VerifyOtpPage
           otp={otp}
           setOtp={setOtp}
@@ -213,104 +237,113 @@ const SignUpPage = () => {
         />
       ) : (
         <>
-          <div className="flex justify-center items-center w-screen h-screen">
-            <Card className="w-96">
-              <CardHeader
-                variant="gradient"
-                color="gray"
-                className="mb-4 grid h-28 place-items-center"
-              >
-                <Typography variant="h3" color="white">
-                  Sign Up
-                </Typography>
-              </CardHeader>
-              <CardBody className="flex flex-col gap-4">
-                <Input
-                  label="FirstName"
-                  size="lg"
-                  name="firstName"
-                  type="text"
-                  value={form.firstName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e)
-                  }
-                />
-                <Input
-                  label="LastName"
-                  size="lg"
-                  name="lastName"
-                  type="text"
-                  value={form.lastName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e)
-                  }
-                />
-                <Input
-                  label="Password"
-                  size="lg"
-                  name="password"
-                  type="text"
-                  value={form.password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e)
-                  }
-                />
-                <Input
-                  label="Confirm Password"
-                  size="lg"
-                  name="confirmPassword"
-                  type="text"
-                  value={form.confirmPassword}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e)
-                  }
-                />
-                <Input
-                  label="ContactMode"
-                  size="lg"
-                  name="contactMode"
-                  type="text"
-                  value={form.contactMode}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e)
-                  }
-                />
-                <Input
-                  label="Email"
-                  size="lg"
-                  name="email"
-                  type="text"
-                  value={form.email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleInputChange(e)
-                  }
-                />
-              </CardBody>
-              <CardFooter className="pt-0">
-                <Button
+          <div className="md:flex md:flex-row flex-col justify-center align-center signup-container">
+            <div className="signup-img-container">
+              <img
+                src={signup}
+                alt="signup_illustration"
+                className="signup-img"
+              />
+            </div>
+            <div className="flex justify-center items-center w-screen h-screen signup-form-container">
+              <Card className="w-96">
+                <CardHeader
                   variant="gradient"
-                  fullWidth
-                  onClick={() => handleOTPStart()}
+                  color="gray"
+                  className="mb-4 grid h-28 place-items-center"
                 >
-                  Send OTP
-                </Button>
-                <Typography
-                  variant="small"
-                  className="mt-6 flex justify-center"
-                >
-                  Already have an account?
-                  <Typography
-                    as="a"
-                    href="/signin"
-                    variant="small"
-                    color="blue-gray"
-                    className="ml-1 font-bold"
-                  >
-                    Login
+                  <Typography variant="h3" color="white">
+                    Let Us Know!
                   </Typography>
-                </Typography>
-              </CardFooter>
-            </Card>
+                </CardHeader>
+                <CardBody className="flex flex-col gap-4">
+                  <Input
+                    label="FirstName"
+                    size="lg"
+                    name="firstName"
+                    type="text"
+                    value={form.firstName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                  <Input
+                    label="LastName"
+                    size="lg"
+                    name="lastName"
+                    type="text"
+                    value={form.lastName}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                  <Input
+                    label="Password"
+                    size="lg"
+                    name="password"
+                    type="password"
+                    value={form.password}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                  <Input
+                    label="Confirm Password"
+                    size="lg"
+                    name="confirmPassword"
+                    type="password"
+                    value={form.confirmPassword}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                  <Input
+                    label="ContactMode"
+                    size="lg"
+                    name="contactMode"
+                    type="text"
+                    value={form.contactMode}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                  <Input
+                    label="Email"
+                    size="lg"
+                    name="email"
+                    type="text"
+                    value={form.email}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleInputChange(e)
+                    }
+                  />
+                </CardBody>
+                <CardFooter className="pt-0">
+                  <Button
+                    variant="gradient"
+                    fullWidth
+                    onClick={() => handleOTPStart()}
+                  >
+                    Send OTP
+                  </Button>
+                  <Typography
+                    variant="small"
+                    className="mt-6 flex justify-center"
+                  >
+                    Already have an account?
+                    <Typography
+                      as="a"
+                      href="/signin"
+                      variant="small"
+                      color="blue-gray"
+                      className="ml-1 font-bold"
+                    >
+                      Login
+                    </Typography>
+                  </Typography>
+                </CardFooter>
+              </Card>
+            </div>
           </div>
         </>
       )}

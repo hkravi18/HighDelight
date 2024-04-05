@@ -13,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+import signin from "../assets/signin.png";
+
 const Input: React.ForwardRefExoticComponent<any> = InputTailwind;
 const Button: React.ForwardRefExoticComponent<any> = ButtonTailwind;
 const Card: React.ForwardRefExoticComponent<any> = CardTailwind;
@@ -23,12 +25,14 @@ const Typography: React.ForwardRefExoticComponent<any> = TypographyTailwind;
 
 import "../styles/SignInPage.css";
 import { useAuth } from "../hooks/useAuth";
+import { SyncLoadingScreen } from "../components/LoadingScreen";
 
 // TODO: Change all the alert messages to toast messages
 const SignInPage = () => {
   const { dispatch } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -50,6 +54,7 @@ const SignInPage = () => {
     }
 
     e.preventDefault();
+    setLoading(true);
     try {
       const reqData: object = {
         email,
@@ -103,74 +108,91 @@ const SignInPage = () => {
         console.log("ERROR (signin): An unknown error occurred");
       }
     }
+    setLoading(false);
   };
 
   return (
     <>
-      <div className="flex justify-center items-center w-screen h-screen">
-        <Card className="w-96">
-          <CardHeader
-            variant="gradient"
-            color="gray"
-            className="mb-4 grid h-28 place-items-center"
-          >
-            <Typography variant="h3" color="white">
-              Sign In
-            </Typography>
-          </CardHeader>
-          <CardBody className="flex flex-col gap-4">
-            <Typography color="blue-gray" className="-mb-2 ml-2 font-medium">
-              Email<span className="text-red-800">*</span> :
-            </Typography>
-            <Input
-              label="Email"
-              size="lg"
-              name="email"
-              type="text"
-              value={email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setEmail(e.target.value)
-              }
-            />
-            <Typography color="blue-gray" className="-mb-2 ml-2 font-medium">
-              Password<span className="text-red-800">*</span> :
-            </Typography>
-            <Input
-              label="Password"
-              size="lg"
-              name="password"
-              type="password"
-              value={password}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
-            />
-          </CardBody>
-          <CardFooter className="pt-0">
-            <Button
-              variant="gradient"
-              fullWidth
-              onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                handleSubmit(e)
-              }
-            >
-              Login
-            </Button>
-            <Typography variant="small" className="mt-6 flex justify-center">
-              Don&apos;t have an account?
-              <Typography
-                as="a"
-                href="/signup"
-                variant="small"
-                color="blue-gray"
-                className="ml-1 font-bold"
+      {loading ? (
+        <SyncLoadingScreen
+          message="Logging in..."
+          messageColor="#000"
+          loaderColor="#000"
+        />
+      ) : (
+        <div className="md:flex md:flex-row flex-col">
+          <div>
+            <img src={signin} alt="signIn_illustration" />
+          </div>
+          <div className="flex justify-center items-center w-screen h-screen">
+            <Card className="w-96">
+              <CardHeader
+                variant="gradient"
+                color="gray"
+                className="mb-4 grid h-28 place-items-center"
               >
-                Sign up
-              </Typography>
-            </Typography>
-          </CardFooter>
-        </Card>
-      </div>
+                <Typography variant="h3" color="white">
+                  Fill What We Know!
+                </Typography>
+              </CardHeader>
+              <CardBody className="flex flex-col gap-4">
+                <Typography
+                  color="blue-gray"
+                  className="-mb-2 ml-2 font-medium"
+                >
+                  Email<span className="text-red-800">*</span> :
+                </Typography>
+                <Input
+                  label="Email"
+                  size="lg"
+                  name="email"
+                  type="text"
+                  value={email}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setEmail(e.target.value)
+                  }
+                />
+                <Typography
+                  color="blue-gray"
+                  className="-mb-2 ml-2 font-medium"
+                >
+                  Password<span className="text-red-800">*</span> :
+                </Typography>
+                <Input
+                  label="Password"
+                  size="lg"
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(e.target.value)
+                  }
+                />
+              </CardBody>
+              <CardFooter className="pt-0">
+                <Button
+                  variant="gradient"
+                  fullWidth
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                    handleSubmit(e)
+                  }
+                  className="mt-2 mb-2"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  variant="gradient"
+                  fullWidth
+                  onClick={() => navigate("/signup")}
+                  className="mt-2 mb-2"
+                >
+                  Sign Up
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </div>
+      )}
     </>
   );
 };
