@@ -108,8 +108,10 @@ export const sendOtp = async (req: Request, res: Response) => {
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
     const { email, otp }: VerifyOTPRequestBody = req.body;
+    console.log("req.body : ", req.body);
 
     const otpInfo = await Otp.findOne({ email });
+    console.log("otpInfo : ", otpInfo);
 
     if (!otpInfo) {
       return res.status(404).json({
