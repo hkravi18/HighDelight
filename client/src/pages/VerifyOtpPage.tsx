@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 
 import "../styles/VerifyOtpPage.css";
+import { Toaster, toast } from "sonner";
 
 const Input: React.ForwardRefExoticComponent<any> = InputTailwind;
 const Button: React.ForwardRefExoticComponent<any> = ButtonTailwind;
@@ -39,12 +40,14 @@ const VerifyOtpPage: React.FC<OtpInputProps> = ({
     const str: string = e.target.value;
 
     if (str.length > valueLength) {
-      alert(`OTP should contains only ${valueLength} characters`);
+      // alert(`OTP should contains only ${valueLength} characters`);
+      toast.error(`OTP should contains only ${valueLength} characters`);
       return;
     }
 
     if (!validateChar(str)) {
-      alert("OTP should contains numeric characters only");
+      // alert("OTP should contains numeric characters only");
+      toast.error("OTP should contains numeric characters only");
       return;
     }
 
@@ -107,6 +110,7 @@ const VerifyOtpPage: React.FC<OtpInputProps> = ({
           </CardFooter>
         </Card>
       </div>
+      <Toaster richColors closeButton position="top-center" />
     </>
   );
 };

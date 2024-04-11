@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Toaster, toast } from "sonner";
 
 import signin from "../assets/signin.png";
 
@@ -54,7 +55,8 @@ const SignInPage = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const validationStr = handleFieldsValidation();
     if (validationStr.length !== 0) {
-      alert(`Error: ${validationStr}`);
+      // alert(`Error: ${validationStr}`);
+      toast.error(validationStr);
       return;
     }
 
@@ -77,7 +79,8 @@ const SignInPage = () => {
       const { data } = response;
 
       if (data?.ok) {
-        alert("Login successful");
+        // alert("Login successful");
+        toast.success("Login successful");
 
         const user = data?.data?.user;
 
@@ -96,14 +99,15 @@ const SignInPage = () => {
             contactMode: user.contactMode,
           },
         });
-        console.log("user : ", user);
+        // console.log("user : ", user);
 
         setEmail("");
         setPassword("");
 
         navigate("/");
       } else {
-        alert("Error in login, Please try again");
+        // alert("Error in login, Please try again");
+        toast.error("Error in login, Please try again");
         console.log("ERROR (signin): ", data?.error || "error in login");
       }
     } catch (err) {
@@ -112,6 +116,7 @@ const SignInPage = () => {
       } else {
         console.log("ERROR (signin): An unknown error occurred");
       }
+      toast.error("Error in login, Please try again");
     }
     setLoading(false);
   };
@@ -226,6 +231,7 @@ const SignInPage = () => {
           </div>
         </div>
       )}
+      <Toaster richColors closeButton position="top-center" />
     </>
   );
 };

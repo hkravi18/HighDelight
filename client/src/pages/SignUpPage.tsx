@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Toaster, toast } from "sonner";
 
 //components
 import { SyncLoadingScreen } from "../components/LoadingScreen";
@@ -81,13 +82,15 @@ const SignUpPage = () => {
       const { data } = response;
 
       if (data?.ok) {
-        alert("OTP verification successful");
+        // alert("OTP verification successful");
+        toast.success("OTP verification successful");
         console.log("OTP verification successful");
         // TODO: Handle successful OTP verification
 
         handleSignup();
       } else {
-        alert("Error in OTP verification, Please try again");
+        // alert("Error in OTP verification, Please try again");
+        toast.error("Error in OTP verification, Please try again");
         console.log(
           "ERROR (OTP verification): ",
           data?.error || "Error in OTP verification"
@@ -99,6 +102,7 @@ const SignUpPage = () => {
       } else {
         console.log("ERROR (OTP verification): An unknown error occurred");
       }
+      toast.error("Error in OTP Verification, Please try again");
     }
     setLoading(false);
     setLoadingMsg("");
@@ -136,7 +140,8 @@ const SignUpPage = () => {
       const { data } = response;
 
       if (data?.ok) {
-        alert("Signup successful");
+        // alert("Signup successful");
+        toast.success("Signup successful");
 
         setForm({
           firstName: "",
@@ -167,7 +172,8 @@ const SignUpPage = () => {
 
         navigate("/");
       } else {
-        alert("Error in signup, Please try again");
+        // alert("Error in signup, Please try again");
+        toast.error("Error in signup, Please try again");
         console.log("ERROR (signup): ", data?.error || "error in signup");
       }
     } catch (err) {
@@ -176,6 +182,7 @@ const SignUpPage = () => {
       } else {
         console.log("ERROR (signup): An unknown error occurred");
       }
+      toast.error("Error in signup, Please try again");
     }
     setLoading(false);
     setLoadingMsg("");
@@ -208,7 +215,8 @@ const SignUpPage = () => {
   const handleOTPStart = async () => {
     const validationStr: string = handleFieldsValidation();
     if (validationStr.length !== 0) {
-      alert(`Error: ${validationStr}`);
+      // alert(`Error: ${validationStr}`);
+      toast.error(validationStr);
       return;
     }
 
@@ -231,12 +239,14 @@ const SignUpPage = () => {
       const { data } = response;
 
       if (data?.ok) {
-        alert("OTP send successfully");
+        // alert("OTP send successfully");
+        toast.success("OTP send successfully");
         console.log("OTP send successfully");
 
         setIsOtpSend(() => true);
       } else {
-        alert("Error in sending OTP, Please try again");
+        // alert("Error in sending OTP, Please try again");
+        toast.error("Error in sending OTP, Please try again");
         console.log("ERROR (send-otp): ", data?.error || "error in signup");
       }
     } catch (err) {
@@ -245,6 +255,7 @@ const SignUpPage = () => {
       } else {
         console.log("ERROR (send-otp): An unknown error occurred");
       }
+      toast.error("Error in sending OTP, Please try again");
     }
     setLoading(false);
     setLoadingMsg("");
@@ -427,6 +438,7 @@ const SignUpPage = () => {
               </Card>
             </div>
           </div>
+          <Toaster richColors closeButton position="top-center" />
         </>
       )}
     </>
