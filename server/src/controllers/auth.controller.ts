@@ -219,3 +219,35 @@ export const login = async (
     });
   }
 };
+
+// @desc     User Signup
+// route     POST /api/auth/signup
+// @access   Public
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+    });
+    res.clearCookie("email", {
+      httpOnly: true,
+      secure: true,
+    });
+
+    return res.status(200).json({
+      ok: true,
+      message: "User logout successfully.",
+      data: {},
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`ERROR (logout): ${err.message}`);
+    }
+
+    return res.status(500).json({
+      ok: false,
+      error: "User Logout failed, Please try again.",
+      data: {},
+    });
+  }
+};

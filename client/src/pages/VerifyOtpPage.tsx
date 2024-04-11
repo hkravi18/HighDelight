@@ -2,19 +2,17 @@ import {
   Input as InputTailwind,
   Button as ButtonTailwind,
   Card as CardTailwind,
-  CardHeader as CardHeaderTailwind,
   CardBody as CardBodyTailwind,
   CardFooter as CardFooterTailwind,
   Typography as TypographyTailwind,
 } from "@material-tailwind/react";
 
 import "../styles/VerifyOtpPage.css";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 const Input: React.ForwardRefExoticComponent<any> = InputTailwind;
 const Button: React.ForwardRefExoticComponent<any> = ButtonTailwind;
 const Card: React.ForwardRefExoticComponent<any> = CardTailwind;
-const CardHeader: React.ForwardRefExoticComponent<any> = CardHeaderTailwind;
 const CardBody: React.ForwardRefExoticComponent<any> = CardBodyTailwind;
 const CardFooter: React.ForwardRefExoticComponent<any> = CardFooterTailwind;
 const Typography: React.ForwardRefExoticComponent<any> = TypographyTailwind;
@@ -27,7 +25,7 @@ type OtpInputProps = {
   handleOTPStart: () => void;
 };
 
-const validateChar = (char: string) => /^[0-9]{0,6}$/.test(char);
+const validateOTP = (otp: string) => /^[0-9]{0,6}$/.test(otp);
 
 const VerifyOtpPage: React.FC<OtpInputProps> = ({
   otp,
@@ -45,12 +43,6 @@ const VerifyOtpPage: React.FC<OtpInputProps> = ({
       return;
     }
 
-    if (!validateChar(str)) {
-      // alert("OTP should contains numeric characters only");
-      toast.error("OTP should contains numeric characters only");
-      return;
-    }
-
     setOtp(str);
   };
 
@@ -59,24 +51,31 @@ const VerifyOtpPage: React.FC<OtpInputProps> = ({
     handleOTPStart();
   };
 
+  const submitOTP = () => {
+    if (otp === "") {
+      // alert("OTP is required");
+      toast.error("OTP is required, Please enter OTP");
+      return;
+    }
+
+    if (!validateOTP(otp)) {
+      // alert("OTP should contains numeric characters only");
+      toast.error(
+        "OTP should contains numeric characters only, Please enter valid OTP"
+      );
+      return;
+    }
+    handleOtpVerification();
+  };
+
   return (
     <>
       <div className="flex justify-center items-center w-screen h-screen">
-        <Card className="w-96">
-          <CardHeader
-            variant="gradient"
-            color="gray"
-            className="mb-4 grid h-28 place-items-center"
-          >
-            <Typography variant="h3" color="white">
-              Verify OTP
-            </Typography>
-          </CardHeader>
+        <Card className="w-96 verify-otp-container">
+          <h3 className="otp-title">Verify OTP</h3>
           <CardBody className="flex flex-col gap-4">
-            <Typography color="blue-gray" className="-mb-2 ml-2 font-medium">
-              OTP<span className="text-red-800">*</span> :
-            </Typography>
             <Input
+              variant="standard"
               label="Enter your Otp"
               size="lg"
               type="number"
@@ -91,7 +90,13 @@ const VerifyOtpPage: React.FC<OtpInputProps> = ({
             <Button
               variant="gradient"
               fullWidth
-              onClick={handleOtpVerification}
+              onClick={() => submitOTP()}
+              style={{
+                background: "linear-gradient(to right, #3a244a, #3a244a)",
+                padding: "10px",
+                textTransform: "none",
+                fontSize: "14px",
+              }}
             >
               Verify OTP
             </Button>
@@ -110,7 +115,6 @@ const VerifyOtpPage: React.FC<OtpInputProps> = ({
           </CardFooter>
         </Card>
       </div>
-      <Toaster richColors closeButton position="top-center" />
     </>
   );
 };

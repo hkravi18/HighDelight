@@ -35,7 +35,7 @@ const handleValidation = (
     }
 
     const nameRegex = /^[A-Za-z]+$/;
-    if (nameRegex.test(firstName)) {
+    if (!nameRegex.test(firstName)) {
       return {
         valid: false,
         message: "",
@@ -43,7 +43,7 @@ const handleValidation = (
       };
     }
 
-    if (lastName !== "" && nameRegex.test(lastName)) {
+    if (lastName !== "" && !nameRegex.test(lastName)) {
       return {
         valid: false,
         message: "",

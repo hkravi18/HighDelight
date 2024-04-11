@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 import signin from "../assets/signin.png";
 
@@ -110,12 +110,16 @@ const SignInPage = () => {
         console.log("ERROR (signin): ", data?.error || "error in login");
       }
     } catch (err) {
+      let errMsg = "Error in login, Please try again";
       if (err instanceof Error) {
         console.log("ERROR (signin): ", err.message || "");
+        if (axios.isAxiosError(err)) {
+          errMsg = err?.response?.data?.error;
+        }
       } else {
         console.log("ERROR (signin): An unknown error occurred");
       }
-      toast.error("Error in login, Please try again");
+      toast.error(errMsg);
     }
     setLoading(false);
   };
@@ -217,10 +221,12 @@ const SignInPage = () => {
                   onClick={() => navigate("/signup")}
                   className="mt-2 mb-2 signin-btn2"
                   style={{
-                    background: "linear-gradient(to right, #3a244a, #3a244a)",
+                    background: "#fff",
+                    color: "#3a244a",
                     padding: "10px",
                     textTransform: "none",
                     fontSize: "14px",
+                    border: "1px solid #3a244a",
                   }}
                 >
                   Sign Up
@@ -230,7 +236,6 @@ const SignInPage = () => {
           </div>
         </div>
       )}
-      <Toaster richColors closeButton position="top-center" />
     </>
   );
 };

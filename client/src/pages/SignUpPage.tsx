@@ -96,12 +96,17 @@ const SignUpPage = () => {
         );
       }
     } catch (err) {
+      let errMsg = "Error in OTP Verification, Please try again";
       if (err instanceof Error) {
         console.log("ERROR (OTP verification): ", err.message || "");
+        if (axios.isAxiosError(err)) {
+          errMsg = err?.response?.data?.error;
+        }
       } else {
         console.log("ERROR (OTP verification): An unknown error occurred");
       }
-      toast.error("Error in OTP Verification, Please try again");
+      console.log("errMsg : ", errMsg);
+      toast.error(errMsg);
     }
     setLoading(false);
     setLoadingMsg("");
@@ -176,12 +181,16 @@ const SignUpPage = () => {
         console.log("ERROR (signup): ", data?.error || "error in signup");
       }
     } catch (err) {
+      let errMsg = "Error in signup, Please try again";
       if (err instanceof Error) {
         console.log("ERROR (signup): ", err.message || "");
+        if (axios.isAxiosError(err)) {
+          errMsg = err?.response?.data?.error;
+        }
       } else {
         console.log("ERROR (signup): An unknown error occurred");
       }
-      toast.error("Error in signup, Please try again");
+      toast.error(errMsg);
     }
     setLoading(false);
     setLoadingMsg("");
@@ -214,12 +223,12 @@ const SignUpPage = () => {
     }
 
     const nameRegex = /^[A-Za-z]+$/;
-    if (nameRegex.test(form.firstName)) {
-      return "Please enter a valid first name";
+    if (!nameRegex.test(form.firstName)) {
+      return "Please enter a valid first name, it should contain only eng alphabets";
     }
 
-    if (form.lastName !== "" && nameRegex.test(form.lastName)) {
-      return "Please enter a valid last name";
+    if (form.lastName !== "" && !nameRegex.test(form.lastName)) {
+      return "Please enter a valid last name, it should contain only eng alphabets";
     }
 
     return "";
@@ -263,12 +272,16 @@ const SignUpPage = () => {
         console.log("ERROR (send-otp): ", data?.error || "error in signup");
       }
     } catch (err) {
+      let errMsg = "Error in sending OTP, Please try again";
       if (err instanceof Error) {
         console.log("ERROR (send-otp): ", err.message || "");
+        if (axios.isAxiosError(err)) {
+          errMsg = err?.response?.data?.error;
+        }
       } else {
         console.log("ERROR (send-otp): An unknown error occurred");
       }
-      toast.error("Error in sending OTP, Please try again");
+      toast.error(errMsg);
     }
     setLoading(false);
     setLoadingMsg("");
@@ -322,7 +335,7 @@ const SignUpPage = () => {
                 <CardBody className="flex flex-col gap-4">
                   <Input
                     variant="standard"
-                    label="FirstName"
+                    label="First Name"
                     size="lg"
                     name="firstName"
                     type="text"
@@ -330,11 +343,11 @@ const SignUpPage = () => {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange(e)
                     }
-                    className="border-none"
+                    className="border-none bg-white"
                   />
                   <Input
                     variant="standard"
-                    label="LastName"
+                    label="Last Name"
                     size="lg"
                     name="lastName"
                     type="text"
@@ -384,7 +397,7 @@ const SignUpPage = () => {
                   <div className="signup-confirm-password signup-icon">
                     <Input
                       variant="standard"
-                      label="Confirm Password"
+                      label="Retype Password"
                       size="lg"
                       name="confirmPassword"
                       type={confirmPasswordType}
