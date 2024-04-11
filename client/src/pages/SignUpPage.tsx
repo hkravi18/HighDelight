@@ -363,7 +363,7 @@ const SignUpPage = () => {
                       label="Confirm Password"
                       size="lg"
                       name="confirmPassword"
-                      type={passwordType}
+                      type={confirmPasswordType}
                       value={form.confirmPassword}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         handleInputChange(e)
@@ -414,6 +414,12 @@ const SignUpPage = () => {
                     variant="gradient"
                     fullWidth
                     onClick={() => handleOTPStart()}
+                    style={{
+                      background: "linear-gradient(to right, #3a244a, #3a244a)",
+                      padding: "10px",
+                      textTransform: "none",
+                      fontSize: "14px",
+                    }}
                   >
                     Send OTP
                   </Button>

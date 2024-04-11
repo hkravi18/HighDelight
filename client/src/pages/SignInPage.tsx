@@ -198,6 +198,12 @@ const SignInPage = () => {
                     handleSubmit(e)
                   }
                   className="mt-2 mb-2 signin-btn1"
+                  style={{
+                    background: "linear-gradient(to right, #3a244a, #3a244a)",
+                    padding: "10px",
+                    textTransform: "none",
+                    fontSize: "14px",
+                  }}
                 >
                   Sign In
                 </Button>
@@ -206,6 +212,12 @@ const SignInPage = () => {
                   fullWidth
                   onClick={() => navigate("/signup")}
                   className="mt-2 mb-2 signin-btn2"
+                  style={{
+                    background: "linear-gradient(to right, #3a244a, #3a244a)",
+                    padding: "10px",
+                    textTransform: "none",
+                    fontSize: "14px",
+                  }}
                 >
                   Sign Up
                 </Button>
