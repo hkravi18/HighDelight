@@ -2,7 +2,6 @@ import {
   Input as InputTailwind,
   Button as ButtonTailwind,
   Card as CardTailwind,
-  CardHeader as CardHeaderTailwind,
   CardBody as CardBodyTailwind,
   CardFooter as CardFooterTailwind,
 } from "@material-tailwind/react";
@@ -12,31 +11,43 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+
+//components
 import { SyncLoadingScreen } from "../components/LoadingScreen";
+import SelectOption from "../components/SelectOption";
+
+//assets
 import signup from "../assets/signup.png";
 
 const Input: React.ForwardRefExoticComponent<any> = InputTailwind;
 const Button: React.ForwardRefExoticComponent<any> = ButtonTailwind;
 const Card: React.ForwardRefExoticComponent<any> = CardTailwind;
-const CardHeader: React.ForwardRefExoticComponent<any> = CardHeaderTailwind;
 const CardBody: React.ForwardRefExoticComponent<any> = CardBodyTailwind;
 const CardFooter: React.ForwardRefExoticComponent<any> = CardFooterTailwind;
 
 import "../styles/SignUpPage.css";
 
 //interfaces
-import { signInForm } from "../interfaces/authInterface";
+import {
+  SignUpForm as SignUpFormInterface,
+  SelectOption as SelectOptionInterface,
+} from "../interfaces/authInterface";
 
 //pages
 import VerifyOtpPage from "./VerifyOtpPage";
 import { useAuth } from "../hooks/useAuth";
+
+const options: SelectOptionInterface[] = [
+  { value: "EMAIL", label: "Email" },
+  { value: "MOBILE_NUMBER", label: "Mobile Number" },
+];
 
 // TODO: Change all the alert messages to toast messages
 const SignUpPage = () => {
   const { dispatch } = useAuth();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<signInForm>({
+  const [form, setForm] = useState<SignUpFormInterface>({
     firstName: "",
     lastName: "",
     password: "",
@@ -53,6 +64,11 @@ const SignUpPage = () => {
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [passwordType, setPasswordType] = useState<string>("password");
+
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
+  const [confirmPasswordType, setConfirmPasswordType] =
+    useState<string>("password");
 
   const handleOtpVerification = async () => {
     setLoading(true);
@@ -93,6 +109,13 @@ const SignUpPage = () => {
     setForm({
       ...form,
       [name]: value,
+    });
+  };
+
+  const handleSelectChange = (optionChoosed: string) => {
+    setForm({
+      ...form,
+      contactMode: optionChoosed,
     });
   };
 
@@ -174,6 +197,11 @@ const SignUpPage = () => {
     if (form.confirmPassword !== form.password) {
       return "Password and Confirm Password should be same";
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      return "Invalid Email, Please enter a valid email address";
+    }
     return "";
   };
 
@@ -249,26 +277,27 @@ const SignUpPage = () => {
                 className="signup-img"
               />
             </div>
-            <div className="flex justify-center items-center w-screen h-screen signup-form-container">
-              <Card className="w-96">
-                <CardHeader
+            <div className="flex justify-center items-center w-screen h-screen signup-form">
+              <Card className="w-96 signup-form-container">
+                {/* <CardHeader
                   variant="gradient"
                   className="mb-4 grid h-28 place-items-center"
-                >
-                  <div className="signup-form-titles">
-                    <h3 className="signup-title1">
-                      Let Us Know <span>!</span>
-                    </h3>
-                    <h6
-                      className="signup-title2"
-                      onClick={() => navigate("/signin")}
-                    >
-                      Sign<span>In</span>
-                    </h6>
-                  </div>
-                </CardHeader>
+                > */}
+                <div className="signup-form-titles">
+                  <h3 className="signup-title1">
+                    Let Us Know <span>!</span>
+                  </h3>
+                  <h6
+                    className="signup-title2"
+                    onClick={() => navigate("/signin")}
+                  >
+                    Sign<span>In</span>
+                  </h6>
+                </div>
+                {/* </CardHeader> */}
                 <CardBody className="flex flex-col gap-4">
                   <Input
+                    variant="standard"
                     label="FirstName"
                     size="lg"
                     name="firstName"
@@ -280,6 +309,7 @@ const SignUpPage = () => {
                     className="border-none"
                   />
                   <Input
+                    variant="standard"
                     label="LastName"
                     size="lg"
                     name="lastName"
@@ -292,6 +322,7 @@ const SignUpPage = () => {
                   />
                   <div className="signup-password">
                     <Input
+                      variant="standard"
                       label="Password"
                       size="lg"
                       name="password"
@@ -302,30 +333,33 @@ const SignUpPage = () => {
                       }
                       className="border-none"
                     />
-                    {showPassword ? (
-                      <EyeIcon
-                        className="eye-icon w-4 h-4"
-                        onClick={() => {
-                          passwordType === "password"
-                            ? setPasswordType("text")
-                            : setPasswordType("password");
-                          setShowPassword(!showPassword);
-                        }}
-                      />
-                    ) : (
-                      <EyeSlashIcon
-                        className="eye-slash-icon w-4 h-4"
-                        onClick={() => {
-                          passwordType === "password"
-                            ? setPasswordType("text")
-                            : setPasswordType("password");
-                          setShowPassword(!showPassword);
-                        }}
-                      />
-                    )}
+                    <div className="signup-icon">
+                      {showPassword ? (
+                        <EyeIcon
+                          className="eye-icon w-4 h-4 mr-3"
+                          onClick={() => {
+                            passwordType === "password"
+                              ? setPasswordType("text")
+                              : setPasswordType("password");
+                            setShowPassword(!showPassword);
+                          }}
+                        />
+                      ) : (
+                        <EyeSlashIcon
+                          className="eye-slash-icon w-4 h-4 mr-3"
+                          onClick={() => {
+                            passwordType === "password"
+                              ? setPasswordType("text")
+                              : setPasswordType("password");
+                            setShowPassword(!showPassword);
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
-                  <div className="signup-confirm-password">
+                  <div className="signup-confirm-password signup-icon">
                     <Input
+                      variant="standard"
                       label="Confirm Password"
                       size="lg"
                       name="confirmPassword"
@@ -336,40 +370,34 @@ const SignUpPage = () => {
                       }
                       className="border-none"
                     />
-                    {showPassword ? (
+                    {showConfirmPassword ? (
                       <EyeIcon
-                        className="eye-icon w-4 h-4"
+                        className="eye-icon w-4 h-4 mr-3"
                         onClick={() => {
-                          passwordType === "password"
-                            ? setPasswordType("text")
-                            : setPasswordType("password");
-                          setShowPassword(!showPassword);
+                          confirmPasswordType === "password"
+                            ? setConfirmPasswordType("text")
+                            : setConfirmPasswordType("password");
+                          setShowConfirmPassword(!showConfirmPassword);
                         }}
                       />
                     ) : (
                       <EyeSlashIcon
-                        className="eye-slash-icon w-4 h-4"
+                        className="eye-icon w-4 h-4 mr-3"
                         onClick={() => {
-                          passwordType === "password"
-                            ? setPasswordType("text")
-                            : setPasswordType("password");
-                          setShowPassword(!showPassword);
+                          confirmPasswordType === "password"
+                            ? setConfirmPasswordType("text")
+                            : setConfirmPasswordType("password");
+                          setShowConfirmPassword(!showConfirmPassword);
                         }}
                       />
                     )}
                   </div>
-                  <Input
-                    label="ContactMode"
-                    size="lg"
-                    name="contactMode"
-                    type="text"
-                    value={form.contactMode}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleInputChange(e)
-                    }
-                    className="border-none"
+                  <SelectOption
+                    optionsArr={options}
+                    handleSelectChange={handleSelectChange}
                   />
                   <Input
+                    variant="standard"
                     label="Email"
                     size="lg"
                     name="email"

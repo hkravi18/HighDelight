@@ -2,7 +2,6 @@ import {
   Input as InputTailwind,
   Button as ButtonTailwind,
   Card as CardTailwind,
-  CardHeader as CardHeaderTailwind,
   CardBody as CardBodyTailwind,
   CardFooter as CardFooterTailwind,
 } from "@material-tailwind/react";
@@ -18,7 +17,6 @@ import signin from "../assets/signin.png";
 const Input: React.ForwardRefExoticComponent<any> = InputTailwind;
 const Button: React.ForwardRefExoticComponent<any> = ButtonTailwind;
 const Card: React.ForwardRefExoticComponent<any> = CardTailwind;
-const CardHeader: React.ForwardRefExoticComponent<any> = CardHeaderTailwind;
 const CardBody: React.ForwardRefExoticComponent<any> = CardBodyTailwind;
 const CardFooter: React.ForwardRefExoticComponent<any> = CardFooterTailwind;
 
@@ -43,6 +41,11 @@ const SignInPage = () => {
       return "Email is required";
     } else if (password === "") {
       return "Password is required";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return "Invalid Email, Please enter a valid email address";
     }
 
     return "";
@@ -122,26 +125,22 @@ const SignInPage = () => {
           loaderColor="#000"
         />
       ) : (
-        <div className="md:flex md:flex-row flex-col signin-container">
-          <div>
+        <div className="md:flex md:flex-row flex-col justify-around signin-container">
+          <div className="signin-img-container">
             <img
               src={signin}
-              alt="signIn_illustration"
+              alt="signin_illustration"
               className="signin-img"
             />
           </div>
-          <div className="flex justify-center items-center w-screen h-screen">
-            <Card className="w-96">
-              <CardHeader
-                variant="gradient"
-                className="mb-4 grid h-28 place-items-center"
-              >
-                <h3 className="signin-title">
-                  Fill What We Know <span>!</span>
-                </h3>
-              </CardHeader>
+          <div className="flex justify-center items-center w-screen h-screen signin-form">
+            <Card className="w-96 signin-form-container">
+              <h3 className="signin-title">
+                Fill What We Know <span>!</span>
+              </h3>
               <CardBody className="flex flex-col gap-4">
                 <Input
+                  variant="standard"
                   label="Email"
                   size="lg"
                   name="email"
@@ -150,11 +149,12 @@ const SignInPage = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEmail(e.target.value)
                   }
-                  className="border-none"
+                  className="border-none signin-input"
                 />
 
                 <div className="signin-password">
                   <Input
+                    variant="standard"
                     label="Password"
                     size="lg"
                     name="password"
@@ -165,27 +165,29 @@ const SignInPage = () => {
                     }
                     className="border-none"
                   />
-                  {showPassword ? (
-                    <EyeIcon
-                      className="eye-icon w-4 h-4"
-                      onClick={() => {
-                        passwordType === "password"
-                          ? setPasswordType("text")
-                          : setPasswordType("password");
-                        setShowPassword(!showPassword);
-                      }}
-                    />
-                  ) : (
-                    <EyeSlashIcon
-                      className="eye-slash-icon w-4 h-4"
-                      onClick={() => {
-                        passwordType === "password"
-                          ? setPasswordType("text")
-                          : setPasswordType("password");
-                        setShowPassword(!showPassword);
-                      }}
-                    />
-                  )}
+                  <div className="signin-icon">
+                    {showPassword ? (
+                      <EyeIcon
+                        className="eye-icon w-4 h-4"
+                        onClick={() => {
+                          passwordType === "password"
+                            ? setPasswordType("text")
+                            : setPasswordType("password");
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                    ) : (
+                      <EyeSlashIcon
+                        className="eye-slash-icon w-4 h-4"
+                        onClick={() => {
+                          passwordType === "password"
+                            ? setPasswordType("text")
+                            : setPasswordType("password");
+                          setShowPassword(!showPassword);
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               </CardBody>
               <CardFooter className="pt-0">
