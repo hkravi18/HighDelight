@@ -14,8 +14,8 @@ const WelcomePage = () => {
   const { firstName, lastName } = useAuth();
   const { logout, loading, error } = useLogout();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
 
     if (!loading && !error) {
       toast.success("Logout successfully");
