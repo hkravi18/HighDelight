@@ -212,6 +212,16 @@ const SignUpPage = () => {
     if (form.password.length < 8) {
       return "Password must be at least 8 characters long";
     }
+
+    const nameRegex = /^[A-Za-z]+$/;
+    if (nameRegex.test(form.firstName)) {
+      return "Please enter a valid first name";
+    }
+
+    if (form.lastName !== "" && nameRegex.test(form.lastName)) {
+      return "Please enter a valid last name";
+    }
+
     return "";
   };
 

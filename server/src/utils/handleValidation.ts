@@ -33,6 +33,23 @@ const handleValidation = (
         error: "Password must be at least 8 characters long",
       };
     }
+
+    const nameRegex = /^[A-Za-z]+$/;
+    if (nameRegex.test(firstName)) {
+      return {
+        valid: false,
+        message: "",
+        error: "Please enter a valid first name",
+      };
+    }
+
+    if (lastName !== "" && nameRegex.test(lastName)) {
+      return {
+        valid: false,
+        message: "",
+        error: "Please enter a valid last name",
+      };
+    }
   }
 
   if (email === "" || password === "") {
