@@ -43,7 +43,6 @@ const options: SelectOptionInterface[] = [
   { value: "MOBILE_NUMBER", label: "Mobile Number" },
 ];
 
-// TODO: Change all the alert messages to toast messages
 const SignUpPage = () => {
   const { dispatch } = useAuth();
   const navigate = useNavigate();
@@ -208,6 +207,10 @@ const SignUpPage = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
       return "Invalid Email, Please enter a valid email address";
+    }
+
+    if (form.password.length < 8) {
+      return "Password must be at least 8 characters long";
     }
     return "";
   };

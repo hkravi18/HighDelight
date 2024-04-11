@@ -25,6 +25,14 @@ const handleValidation = (
         error: "Passwords do not match",
       };
     }
+
+    if (password.length < 8) {
+      return {
+        valid: false,
+        message: "",
+        error: "Password must be at least 8 characters long",
+      };
+    }
   }
 
   if (email === "" || password === "") {

@@ -25,7 +25,6 @@ import "../styles/SignInPage.css";
 import { useAuth } from "../hooks/useAuth";
 import { SyncLoadingScreen } from "../components/LoadingScreen";
 
-// TODO: Change all the alert messages to toast messages
 const SignInPage = () => {
   const { dispatch } = useAuth();
   const [email, setEmail] = useState<string>("");
